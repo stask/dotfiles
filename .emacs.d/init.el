@@ -1,16 +1,6 @@
 ;; emacs configuration
 
 ;; =============================================================================
-;; environment
-
-(setenv "PATH"
-	(concat "/usr/local/sbin" ":"
-		"/usr/local/bin" ":"
-		"/usr/local/opt/go/libexec/bin" ":"
-		(getenv "HOME") "/.cabal/bin" ":"
-		(getenv "PATH")))
-
-;; =============================================================================
 ;; general settings
 
 ;; less annoying
@@ -72,6 +62,12 @@
     (package-install p)
     (message "Finished installing %s" p)))
 
+;; path
+(package-install-if-needed 'exec-path-from-shell)
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
 ;; theme
 (package-install-if-needed 'zenburn-theme)
 (load-theme 'zenburn t)
@@ -112,6 +108,18 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets
       uniquify-ignore-buffers-re "^\\*")
+
+;; expand-region
+(package-install-if-needed 'expand-region)
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C-+") 'er/contract-region)
+
+;; change-inner
+(package-install-if-needed 'change-inner)
+(require 'change-inner)
+(global-set-key (kbd "M-i") 'change-inner)
+(global-set-key (kbd "M-o") 'change-outer)
 
 ;; git
 (package-install-if-needed 'magit)
