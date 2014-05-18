@@ -33,6 +33,9 @@
 
 ;; better font
 (add-to-list 'default-frame-alist '(font . "Menlo-14"))
+;; frame size
+(add-to-list 'default-frame-alist '(width . 100))
+(add-to-list 'default-frame-alist '(height . 50))
 
 ;; keybindings
 (global-set-key (kbd "C-x ^") 'join-line)
