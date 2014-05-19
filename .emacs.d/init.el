@@ -45,6 +45,12 @@
 (global-set-key (kbd "s-<up>") 'windmove-up)
 (global-set-key (kbd "s-<down>") 'windmove-down)
 
+
+;; =============================================================================
+;; eshell aliases
+(defalias 'ff 'find-file)
+(defalias 'ffo 'find-file-other-window)
+
 ;; =============================================================================
 ;; packages
 
