@@ -73,7 +73,9 @@
 
 ;; theme
 (package-install-if-needed 'zenburn-theme)
-(load-theme 'zenburn t)
+(package-install-if-needed 'sublime-themes)
+(package-install-if-needed 'color-theme-solarized)
+(load-theme 'solarized-dark t)
 
 ;; ido
 (require 'ido)
