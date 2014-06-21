@@ -280,3 +280,7 @@
 	       (set-buffer-modified-p nil)
 	       (message "File '%s' successfully renamed to '%s'" name
 			(file-name-nondirectory new-name))))))))
+
+;; custom modes
+(add-to-list 'load-path "~/.emacs.d/local/")
+(require 'flex-mode)
