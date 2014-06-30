@@ -181,7 +181,12 @@
   (go-loop 2)
   ;; carmine
   (wcar* 'defun)
-  (wcar 'defun))
+  (wcar 'defun)
+  ;; om
+  (div 2)
+  (ul 2)
+  (ol 2)
+  (li 2))
 
 (package-install-if-needed 'cider)
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
