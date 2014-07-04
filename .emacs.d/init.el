@@ -186,7 +186,10 @@
   (div 2)
   (ul 2)
   (ol 2)
-  (li 2))
+  (li 2)
+  (button 2)
+  (input 2)
+  (span 2))
 
 (package-install-if-needed 'cider)
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
