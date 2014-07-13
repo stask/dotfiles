@@ -241,6 +241,9 @@
 (package-install-if-needed 'scala-mode2)
 (package-install-if-needed 'sbt-mode)
 
+;; docker
+(package-install-if-needed 'dockerfile-mode)
+
 ;; =============================================================================
 ;; random goodies
 
