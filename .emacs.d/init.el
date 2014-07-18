@@ -44,7 +44,8 @@
 (global-set-key (kbd "s-<right>") 'windmove-right)
 (global-set-key (kbd "s-<up>") 'windmove-up)
 (global-set-key (kbd "s-<down>") 'windmove-down)
-
+;; fullscreen
+(global-set-key (kbd "M-RET") 'toggle-frame-fullscreen)
 
 ;; =============================================================================
 ;; eshell aliases
@@ -189,7 +190,10 @@
   (li 2)
   (button 2)
   (input 2)
-  (span 2))
+  (span 2)
+  ;; svg
+  (svg 2)
+  (g 2))
 
 (package-install-if-needed 'cider)
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
@@ -291,6 +295,13 @@
 	       (set-buffer-modified-p nil)
 	       (message "File '%s' successfully renamed to '%s'" name
 			(file-name-nondirectory new-name))))))))
+
+(defun cljsbuild-dev ()
+  "Runs 'lein cljsbuild auto dev' asynchronously in background"
+  (interactive)
+  (projectile-with-default-dir (projectile-project-root)
+    (async-shell-command "lein cljsbuild auto dev"
+                         "*lein cljsbuild*")))
 
 ;; custom modes
 (add-to-list 'load-path "~/.emacs.d/local/")
