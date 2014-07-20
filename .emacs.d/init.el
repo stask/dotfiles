@@ -296,12 +296,21 @@
 	       (message "File '%s' successfully renamed to '%s'" name
 			(file-name-nondirectory new-name))))))))
 
+(defun cljsbuild-sentinel (proc event)
+  "Reports on changes in cljsbuild buffers."
+  (message (format "%s: %s" proc event)))
+
 (defun cljsbuild-dev ()
-  "Runs 'lein cljsbuild auto dev' asynchronously in background"
+  "Runs 'lein cljsbuild auto dev' asynchronously in background."
   (interactive)
-  (projectile-with-default-dir (projectile-project-root)
-    (async-shell-command "lein cljsbuild auto dev"
-                         "*lein cljsbuild*")))
+  (let* ((cmd "lein cljsbuild auto dev")
+         (name (concat "lein cljsbuild (" (projectile-project-name) ")"))
+         (buffer (generate-new-buffer (concat "*" name "*"))))
+    (with-current-buffer buffer shell-mode)
+    (projectile-with-default-dir (projectile-project-root)
+      (set-process-sentinel (start-process-shell-command name buffer cmd)
+                            'cljsbuild-sentinel))
+    (display-buffer buffer)))
 
 ;; custom modes
 (add-to-list 'load-path "~/.emacs.d/local/")
