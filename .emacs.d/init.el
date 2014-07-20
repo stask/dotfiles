@@ -306,10 +306,13 @@
   (let* ((cmd "lein cljsbuild auto dev")
          (name (concat "lein cljsbuild (" (projectile-project-name) ")"))
          (buffer (generate-new-buffer (concat "*" name "*"))))
-    (with-current-buffer buffer shell-mode)
+    (setq default-major-mode 'comint-mode)
+    (set-buffer-major-mode buffer)
+    (setq default-major-mode 'fundamental-mode)
     (projectile-with-default-dir (projectile-project-root)
-      (set-process-sentinel (start-process-shell-command name buffer cmd)
+      (set-process-sentinel (start-process name buffer "lein" "cljsbuild" "auto" "dev")
                             'cljsbuild-sentinel))
+
     (display-buffer buffer)))
 
 ;; custom modes
