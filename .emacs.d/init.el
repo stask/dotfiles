@@ -178,6 +178,8 @@
   (ANY 2)
   (OPTIONS 2)
   (context 'defun)
+  ;; csv
+  (write-csv 'defun)
   ;; core.async
   (go-loop 2)
   ;; carmine
