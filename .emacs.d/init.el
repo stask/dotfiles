@@ -32,10 +32,12 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; better font
-(add-to-list 'default-frame-alist '(font . "Menlo-14"))
+;(add-to-list 'default-frame-alist '(font . "Menlo-14"))
+;(add-to-list 'default-frame-alist '(font . "InputMonoNarrow 14"))
+(set-default-font "InputMonoNarrow-14")
 ;; frame size
 (add-to-list 'default-frame-alist '(width . 100))
-(add-to-list 'default-frame-alist '(height . 50))
+(add-to-list 'default-frame-alist '(height . 56))
 
 ;; keybindings
 (global-set-key (kbd "C-x ^") 'join-line)
@@ -209,8 +211,12 @@
       js2-indent-on-enter-key t
       js2-enter-indents-newline t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.bowerrc$" . js2-mode))
+
+;; json
+(package-install-if-needed 'json-mode)
+(setq js-indent-level 2)
+(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+(add-to-list 'auto-mode-alist '("\\.bowerrc$" . json-mode))
 
 ;; ruby
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
