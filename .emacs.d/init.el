@@ -188,8 +188,9 @@
   (wcar* 'defun)
   (wcar 'defun)
   ;; om
-  (div 2)
-  (ul 2)
+  (root 'defun)
+  (div 'defun)
+  (ul 'defun)
   (ol 2)
   (li 2)
   (button 2)
@@ -322,6 +323,11 @@
                             'cljsbuild-sentinel))
 
     (display-buffer buffer)))
+
+(defun eshell/clear ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
 
 ;; custom modes
 (add-to-list 'load-path "~/.emacs.d/local/")
