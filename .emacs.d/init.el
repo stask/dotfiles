@@ -332,3 +332,8 @@
 ;; custom modes
 (add-to-list 'load-path "~/.emacs.d/local/")
 (require 'flex-mode)
+
+(add-to-list 'load-path "~/projects/stask/dash-at-point/")
+(require 'dash-at-point)
+(add-to-list 'dash-at-point-mode-alist '(clojure-mode . "clojure,java"))
+(global-set-key "\C-cd" 'dash-at-point)
