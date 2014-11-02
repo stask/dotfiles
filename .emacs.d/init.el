@@ -152,6 +152,7 @@
 (add-hook 'lisp-mode-hook                        #'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
+(add-hook 'inferior-lisp-mode-hook               #'enable-paredit-mode)
 
 (require 'eldoc)
 (eldoc-add-command
@@ -183,7 +184,7 @@
   ;; csv
   (write-csv 'defun)
   ;; core.async
-  (go-loop 2)
+  (go-loop 'defun)
   ;; carmine
   (wcar* 'defun)
   (wcar 'defun)
@@ -191,20 +192,61 @@
   (root 'defun)
   (div 'defun)
   (ul 'defun)
-  (ol 2)
-  (li 2)
-  (button 2)
-  (input 2)
-  (span 2)
+  (ol 'defun)
+  (li 'defun)
+  (button 'defun)
+  (input 'defun)
+  (span 'defun)
+  (table 'defun)
+  (thead 'defun)
+  (tr 'defun)
+  (th 'defun)
+  (tbody 'defun)
+  (td 'defun)
+  (a 'defun)
   ;; svg
   (svg 2)
   (g 2))
 
-(package-install-if-needed 'cider)
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
-(setq cider-repl-print-length 200
-      cider-repl-history-file "~/.emacs.d/cider-history")
+;; company-mode
+(package-install-if-needed 'company)
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(require 'company-etags)
+(add-to-list 'company-etags-modes 'clojure-mode)
+
+;; from http://martintrojer.github.io/clojure/2014/10/02/clojure-and-emacs-without-cider/
+(add-hook 'clojure-mode-hook
+          '(lambda ()
+             (define-key clojure-mode-map
+               "\C-c\C-k"
+               '(lambda ()
+                  (interactive)
+                  (let ((current-point (point)))
+                    (goto-char (point-min))
+                    (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
+                      (when ns-idx
+                        (goto-char ns-idx)
+                        (let ((sym (symbol-at-point)))
+                          (message (format "Loading %s ..." sym))
+                          (lisp-eval-string (format "(require '%s :reload)" sym))
+                          (lisp-eval-string (format "(in-ns '%s)" sym)))))
+                    (goto-char current-point))))))
+
+(add-hook 'inferrior-lisp-mode-hook
+          '(lambda ()
+             (define-key inferrior-lisp-mode-map
+               "\C-cl"
+               '(lambda ()
+                  (interactive)
+                  (erase-buffer)
+                  (lisp-eval-string "")))))
+
+;; (package-install-if-needed 'cider)
+;; (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;; (add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
+;; (setq cider-repl-print-length 200
+;;       cider-repl-history-file "~/.emacs.d/cider-history")
 
 ;; js
 (package-install-if-needed 'js2-mode)
@@ -307,7 +349,7 @@
 
 (defun cljsbuild-sentinel (proc event)
   "Reports on changes in cljsbuild buffers."
-  (message (format "%s: %s" proc event)))
+  (message (format "%s: %s" proc (replace-regexp-in-string "\n" "" event))))
 
 (defun cljsbuild-dev ()
   "Runs 'lein cljsbuild auto dev' asynchronously in background."
@@ -317,6 +359,7 @@
          (buffer (generate-new-buffer (concat "*" name "*"))))
     (setq default-major-mode 'comint-mode)
     (set-buffer-major-mode buffer)
+    (ansi-color-for-comint-mode-on)
     (setq default-major-mode 'fundamental-mode)
     (projectile-with-default-dir (projectile-project-root)
       (set-process-sentinel (start-process name buffer "lein" "cljsbuild" "auto" "dev")
